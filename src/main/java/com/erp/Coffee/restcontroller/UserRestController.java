@@ -35,16 +35,25 @@ public class UserRestController {
         this.userService = userService;
     }
 
+    /**
+     * Получение всех пользователей
+     */
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         return new ResponseEntity<>(userService.getUsers(), HttpStatus.OK);
     }
 
+    /**
+     * Добавление нового пользователя
+     */
     @PostMapping
     public ResponseEntity<User> saveUser(@RequestBody User user) {
         return new ResponseEntity<>(userService.saveUser(user), HttpStatus.CREATED);
     }
 
+    /**
+     * Задание роли пользователю
+     */
     @PostMapping("/role")
     public ResponseEntity<?> assignRoleToUser(@RequestBody RoleToUserDTO roleToUserDTO) {
         userService.addRoleToUser(roleToUserDTO.getUsername(), roleToUserDTO.getRole());
@@ -69,7 +78,7 @@ public class UserRestController {
                 String accessToken = JWT.create()
                         .withSubject(user.getUsername())
                         .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
-                        .withIssuer(request.getRequestURI().toString())
+                        .withIssuer(request.getRequestURI())
                         .withClaim("roles", user.getRoles().stream().map(Role::getName).toList())
                         .sign(algorithm);
 

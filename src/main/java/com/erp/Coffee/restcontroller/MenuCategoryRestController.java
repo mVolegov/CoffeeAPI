@@ -22,6 +22,9 @@ public class MenuCategoryRestController {
         this.menuCategoryServiceImpl = menuCategoryServiceImpl;
     }
 
+    /**
+     * Получение всех категорий меню
+     */
     @GetMapping
     public ResponseEntity<List<MenuCategory>> getAllMenuCategories() {
         List<MenuCategory> allMenuCategories = menuCategoryServiceImpl.findAllMenuCategories();

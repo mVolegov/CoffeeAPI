@@ -21,6 +21,9 @@ public class RoleRestController {
         this.userService = userService;
     }
 
+    /**
+     * Добавление новой роли
+     */
     @PostMapping
     public ResponseEntity<Role> saveRole(@RequestBody Role role) {
         return new ResponseEntity<>(userService.saveRole(role), HttpStatus.CREATED);
