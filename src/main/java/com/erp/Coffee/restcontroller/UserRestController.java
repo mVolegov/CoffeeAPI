@@ -10,6 +10,7 @@ import com.erp.Coffee.model.User;
 import com.erp.Coffee.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -31,7 +32,7 @@ public class UserRestController {
     private final UserService userService;
 
     @Autowired
-    public UserRestController(UserService userService) {
+    public UserRestController(@Qualifier("userServiceImpl") UserService userService) {
         this.userService = userService;
     }
 

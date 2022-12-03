@@ -1,8 +1,10 @@
 package com.erp.Coffee.restcontroller;
 
 import com.erp.Coffee.model.MenuItem;
+import com.erp.Coffee.service.MenuItemService;
 import com.erp.Coffee.service.impl.MenuItemServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,11 +15,11 @@ import java.util.List;
 @RequestMapping("/api/v1/menu-items")
 public class MenuItemRestController {
 
-    private final MenuItemServiceImpl menuItemServiceImpl;
+    private final MenuItemService menuItemService;
 
     @Autowired
-    public MenuItemRestController(MenuItemServiceImpl menuItemServiceImpl) {
-        this.menuItemServiceImpl = menuItemServiceImpl;
+    public MenuItemRestController(@Qualifier("menuItemServiceImpl") MenuItemService menuItemService) {
+        this.menuItemService = menuItemService;
     }
 
     /**
@@ -25,7 +27,7 @@ public class MenuItemRestController {
      */
     @GetMapping
     public ResponseEntity<List<MenuItem>> getAllMenuItems() {
-        List<MenuItem> menuItems = menuItemServiceImpl.findAllMenuItems();
+        List<MenuItem> menuItems = menuItemService.findAllMenuItems();
         return new ResponseEntity<>(menuItems, HttpStatus.OK);
     }
 
@@ -34,7 +36,7 @@ public class MenuItemRestController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<MenuItem> getMenuItemById(@PathVariable("id") Long id) {
-        MenuItem menuItem = menuItemServiceImpl.findMenuItemById(id);
+        MenuItem menuItem = menuItemService.findMenuItemById(id);
         return new ResponseEntity<>(menuItem, HttpStatus.OK);
     }
 
@@ -43,7 +45,7 @@ public class MenuItemRestController {
      */
     @PostMapping
     public ResponseEntity<MenuItem> addMenuElement(@RequestBody MenuItem menuItem) {
-        MenuItem createdMenuItem = menuItemServiceImpl.addMenuItem(menuItem);
+        MenuItem createdMenuItem = menuItemService.addMenuItem(menuItem);
         return new ResponseEntity<>(createdMenuItem, HttpStatus.CREATED);
     }
 
@@ -52,7 +54,7 @@ public class MenuItemRestController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<MenuItem> updateMenuItem(@PathVariable("id") Long id, @RequestBody MenuItem menuItem) {
-        MenuItem updatedMenuItem = menuItemServiceImpl.updateMenuItemById(id, menuItem);
+        MenuItem updatedMenuItem = menuItemService.updateMenuItemById(id, menuItem);
         return new ResponseEntity<>(updatedMenuItem, HttpStatus.OK);
     }
 
@@ -61,7 +63,7 @@ public class MenuItemRestController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteMenuItem(@PathVariable("id") Long id) {
-        menuItemServiceImpl.deleteMenuItemById(id);
+        menuItemService.deleteMenuItemById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

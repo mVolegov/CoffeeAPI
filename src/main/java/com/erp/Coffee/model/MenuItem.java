@@ -15,12 +15,16 @@ public class MenuItem implements Serializable {
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     @Column(nullable = false, updatable = false)
     private Long id;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "description")
     private String description;
+
     @Column(name = "price")
     private BigDecimal price;
+
     @ManyToMany
     @JoinTable(
             name = "menuitem_has_category",
@@ -28,6 +32,9 @@ public class MenuItem implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
     private List<MenuCategory> categories = new ArrayList<>();
+
+    @OneToMany(mappedBy = "menuItem")
+    private List<OrderComposition> orderCompositions = new ArrayList<>();
 
     public MenuItem() {}
 
@@ -54,6 +61,7 @@ public class MenuItem implements Serializable {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", price=" + price +
+                ", categories=" + categories +
                 '}';
     }
 

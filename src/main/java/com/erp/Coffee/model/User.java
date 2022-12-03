@@ -1,5 +1,6 @@
 package com.erp.Coffee.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -42,6 +43,14 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private Status status;
+
+    @JsonIgnore
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            mappedBy = "user"
+    )
+    private List<Order> orders = new ArrayList<>();
 
     public User() {}
 
@@ -86,7 +95,9 @@ public class User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         User user = (User) o;
+
         return Objects.equals(id, user.id)
                 && Objects.equals(username, user.username)
                 && Objects.equals(password, user.password)
@@ -154,5 +165,16 @@ public class User {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        // Потому что inverse end не заботится о внешних ключах
+        if (orders != null) orders.forEach(order -> order.setUser(this));
+
+        this.orders = orders;
     }
 }

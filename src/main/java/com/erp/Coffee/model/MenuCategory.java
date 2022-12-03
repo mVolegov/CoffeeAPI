@@ -15,8 +15,10 @@ public class MenuCategory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, updatable = false)
     private Long id;
+
     @Column(name = "title")
     private String title;
+
     @JsonIgnore
     @ManyToMany(mappedBy = "categories")
     private List<MenuItem> menuItems = new ArrayList<>();

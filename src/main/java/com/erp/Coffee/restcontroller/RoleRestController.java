@@ -3,6 +3,7 @@ package com.erp.Coffee.restcontroller;
 import com.erp.Coffee.model.Role;
 import com.erp.Coffee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +18,7 @@ public class RoleRestController {
     private final UserService userService;
 
     @Autowired
-    public RoleRestController(UserService userService) {
+    public RoleRestController(@Qualifier("userServiceImpl") UserService userService) {
         this.userService = userService;
     }
 

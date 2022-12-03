@@ -1,6 +1,7 @@
 package com.erp.Coffee.service.impl;
 
 import com.erp.Coffee.model.Role;
+import com.erp.Coffee.model.Status;
 import com.erp.Coffee.model.User;
 import com.erp.Coffee.repository.RoleRepository;
 import com.erp.Coffee.repository.UserRepository;
@@ -14,10 +15,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-@Service
+@Service("userServiceImpl")
 @Transactional
 public class UserServiceImpl implements UserService, UserDetailsService {
 
@@ -45,7 +47,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
                 .toList();
 
-        return new org.springframework.security.core.userdetails.User(user.getUsername(),
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(),
                 user.getPassword(),
                 authorities
         );
@@ -55,7 +58,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public User saveUser(User user) {
         user.setCreatedDate(new Date());
         user.setUpdateDate(new Date());
+        user.setRoles(Collections.singletonList(roleRepository.findByName("ROLE_CUSTOMER").get()));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setStatus(Status.ACTIVE);
+
         return userRepository.save(user);
     }
 
